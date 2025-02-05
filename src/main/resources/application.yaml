@@ -11,16 +11,11 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
 
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
-#    path: /swagger-ui.html
-    enabled: true #Включить Swagger UI.  По умолчанию true, но лучше указать явно.
-#  info:
-#    title: Coffee-machine API
-#    description: API для управления кофейным аппаратом
-#    version: 3.0.0
+    enabled: true

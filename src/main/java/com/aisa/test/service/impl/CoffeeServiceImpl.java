@@ -1,7 +1,7 @@
 package com.aisa.test.service.impl;
 
 import com.aisa.test.domain.dto.*;
-import com.aisa.test.domain.exception.CoffeeNotFoundException;
+import com.aisa.test.domain.exception.NotFoundException;
 import com.aisa.test.domain.exception.NotEnoughFundsException;
 import com.aisa.test.domain.exception.NotEnoughIngredientsException;
 import com.aisa.test.domain.mapper.CoffeeMapper;
@@ -48,7 +48,7 @@ public class CoffeeServiceImpl implements CoffeeService {
     public CoffeeDto getCoffeeById(Long coffeeID) {
         log.info("Поиск кофе c id {}", coffeeID);
         Coffee coffee = coffeeRepository.findById(coffeeID)
-                .orElseThrow(() -> new CoffeeNotFoundException("Кофе с таким id не найден"));
+                .orElseThrow(() -> new NotFoundException("Кофе с таким id не найден"));
         return coffeeMapper.coffeeToCoffeeDto(coffee);
     }
 
@@ -66,7 +66,7 @@ public class CoffeeServiceImpl implements CoffeeService {
     public CoffeeIdDto updateCoffee(Long coffeeID, CoffeeDto coffeeDto) {
         log.info("Поиск кофе по id {} для обновления рецепта", coffeeID);
         Coffee coffee = coffeeRepository.findById(coffeeID)
-                .orElseThrow(() -> new CoffeeNotFoundException("Кофе с таким id не найден"));
+                .orElseThrow(() -> new NotFoundException("Кофе с таким id не найден"));
         log.info("Обновление рецепта");
         BeanUtils.copyProperties(coffeeDto, coffee);
         return coffeeMapper.coffeeToCoffeeIdDto(coffee);
@@ -86,7 +86,7 @@ public class CoffeeServiceImpl implements CoffeeService {
 
         log.info("Поиск кофе c id {}", coffeeID);
         Coffee coffee = coffeeRepository.findById(coffeeID)
-                .orElseThrow(() -> new CoffeeNotFoundException("Кофе с таким id не найден"));
+                .orElseThrow(() -> new NotFoundException("Кофе с таким id не найден"));
 
         if (coffee.getPrice()>amountDto.amount()) {
             log.info("Недостаточно средств для покупки");

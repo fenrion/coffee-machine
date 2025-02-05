@@ -2,7 +2,7 @@ package com.aisa.test.service.impl;
 
 import com.aisa.test.domain.dto.StatisticsAllDto;
 import com.aisa.test.domain.dto.StatisticsByCoffeeDto;
-import com.aisa.test.domain.exception.CoffeeNotFoundException;
+import com.aisa.test.domain.exception.NotFoundException;
 import com.aisa.test.domain.model.Coffee;
 import com.aisa.test.domain.model.PurchaseHistory;
 import com.aisa.test.repository.CoffeeRepository;
@@ -29,6 +29,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Transactional
     public StatisticsAllDto getAllStatistics() {
         log.info("Поиск статистики по покупкам каждого вида кофе");
+        //List<PurchaseHistory> purchaseHistories = purchaseHistoryRepository.findAllWithCoffee(); //для решения N+1 с помощью JOIN FETCH
         List<PurchaseHistory> purchaseHistories = purchaseHistoryRepository.findAll();
         Map<String, Long> stats = purchaseHistories.stream()
                 .collect(Collectors.groupingBy(
@@ -42,7 +43,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public StatisticsByCoffeeDto getStatisticsByCoffee(Long coffeeID) {
         log.info("Поиск кофе c id {}", coffeeID);
         Coffee coffee = coffeeRepository.findById(coffeeID)
-                .orElseThrow(() -> new CoffeeNotFoundException("Кофе с таким id не найден"));
+                .orElseThrow(() -> new NotFoundException("Кофе с таким id не найден"));
         log.info("Поиск покупок кофе с id {}", coffeeID);
         List<PurchaseHistory> purchaseHistories = purchaseHistoryRepository.findByCoffee(coffee);
         StatisticsByCoffeeDto statistics = new StatisticsByCoffeeDto(

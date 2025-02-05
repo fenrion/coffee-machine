@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,7 @@ public interface CoffeeController {
     @ApiResponse(responseCode = "404", description = "NOT FOUND",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = GlobalExceptionHandler.ErrorResponse.class))})
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     CoffeeIdDto addCoffee(@Valid @RequestBody CoffeeDto coffeeDto);
 
@@ -65,6 +67,7 @@ public interface CoffeeController {
     @ApiResponse(responseCode = "404", description = "NOT FOUND",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = GlobalExceptionHandler.ErrorResponse.class))})
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/coffee-list/{coffeeID}")
     CoffeeIdDto updateCoffee(@PathVariable Long coffeeID, @Valid @RequestBody CoffeeDto coffeeDto);
 
@@ -76,6 +79,7 @@ public interface CoffeeController {
     @ApiResponse(responseCode = "404", description = "NOT FOUND",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = GlobalExceptionHandler.ErrorResponse.class))})
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/coffee-list/{coffeeID}")
     void deleteCoffee(@PathVariable Long coffeeID);
 
@@ -89,6 +93,7 @@ public interface CoffeeController {
     @ApiResponse(responseCode = "404", description = "NOT FOUND",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = GlobalExceptionHandler.ErrorResponse.class))})
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/coffee-list/{coffeeID}")
     CoffeeDto buyCoffee(@PathVariable Long coffeeID, @RequestBody AmountDto amountDto);
 }
