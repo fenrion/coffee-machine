@@ -1,0 +1,26 @@
+instance:
+  name: demo_aisa
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aisa_coffeeMachine
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1m3zfklmb
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+#    path: /swagger-ui.html
+    enabled: true #Включить Swagger UI.  По умолчанию true, но лучше указать явно.
+#  info:
+#    title: Coffee-machine API
+#    description: API для управления кофейным аппаратом
+#    version: 3.0.0
