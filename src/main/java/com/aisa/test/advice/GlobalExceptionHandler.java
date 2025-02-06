@@ -6,7 +6,6 @@ import com.aisa.test.domain.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationExceptionBadRequest(BindException exception, HttpServletRequest request) {
-        return new ErrorResponse(INPUT_DATA_ERROR, exception.getMessage(), request.getMethod() + " " + request.getRequestURI(), getTime());
+        return new ErrorResponse(INPUT_DATA_ERROR, exception.getFieldError().getDefaultMessage(), request.getMethod() + " " + request.getRequestURI(), getTime());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -52,6 +52,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleNotEnoughIngredientsException(NotEnoughIngredientsException exception, HttpServletRequest request) {
         return new ErrorResponse(NOT_ENOUGH_INGREDIENTS, exception.getMessage(), request.getMethod() + " " + request.getRequestURI(), getTime());
+    }
+
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleSQLException(SQLException exception, HttpServletRequest request) {
+        return new ErrorResponse(SQL_EXCEPTION, exception.getMessage(), request.getMethod() + " " + request.getRequestURI(), getTime());
     }
 
         public record ErrorResponse(String title, String detail, String request, String time) {
